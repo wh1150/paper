@@ -60,7 +60,7 @@ const mutations = {
 
 
 const actions = {
-    //ToolArgs
+    //ToolArgs 테스트
     setToolColor: ({
         commit
     }, toolColor) => {
