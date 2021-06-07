@@ -10,7 +10,7 @@ export class DrawAction {
             createLayer(this._args.layer);
         }
         if (this.removed) {
-            return paper.project.layers[this._args.layer].addChildren(this.removed)
+            return paper.project.layers[this._args.layer].addChildren(this.removed);
         }
     }
     unexec() {

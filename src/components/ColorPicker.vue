@@ -16,7 +16,6 @@ export default {
   methods: {
     selectColor: function(color) {
       this.onSelectColor(color);
-      console.log(color);
     }
   }
 };

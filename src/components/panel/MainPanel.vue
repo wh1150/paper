@@ -25,7 +25,7 @@
       />
       <!-- text select-->
       <panelToolIcon
-          @click.native="setWhiteboardTool('text1'); toggleTextSettings();"
+          @click.native="setWhiteboardTool('text'); toggleTextSettings();"
           :toolColor="textColor"
           :isActive="tool === 'text'"
           :icon="'font'"
@@ -157,6 +157,7 @@
         <!-- ColorPicker -->
         <fontPicker
             :onSelectFont="setContentFont"
+            :add_cont="add_cont"
             class="settingsColorPicker"
             slot="settingsColorPicker"
             :fonts="fonts"
@@ -174,6 +175,7 @@
 </template>
 
 <script>
+import paper from "paper";
 import PanelToolIcon from "./PanelToolIcon";
 import PanelToolSettings from "./PanelToolSettings";
 import ColorPicker from "../ColorPicker";
@@ -183,7 +185,10 @@ import inputContent from "../inputContent";
 import apply_btn_comp from "../apply_btn_comp";
 import colorPalette from "../../config/colorPalette.js";
 import fontPalette from "../../config/fontPalette.js";
-import text_js from "../../tools/tool/text_.js"
+import history from "@/tools/history";
+import { createLayer } from '@/tools/shared';
+import { DrawAction } from "@/tools/action.js";
+
 
 
 export default {
@@ -205,7 +210,6 @@ export default {
       colors: colorPalette,
       fonts: fontPalette,
       font_txt: 'abc <br> ABC',
-      text_js: text_js
     };
   },
   methods: {
@@ -257,10 +261,6 @@ export default {
           !this.isShapeSettingsOpened &&
           !this.isTextSelected )
         this.$store.dispatch("setWhiteboardTool", 'none');
-
-
-      if (this.isTextSelected) console.log("열림", this.$store.getters.tool );
-      else                      console.log("닫힘", this.$store.getters.tool);
     },
     // Set Color
     setToolColor(color) {
@@ -288,11 +288,32 @@ export default {
     },
     setContentFont(font){
       this.$store.dispatch("setContentFont", font);
-      this.text_js.add_text(font);
+      this.add_cont();
     },
     change_txt(font){
       this.font_txt = font;
+    },
+    add_cont(){
+      let cont = this.txt_content;
+      if( cont === '' ) return;
+
+      let pp = new paper.PointText(new paper.Point(300, 200));
+      pp.fillColor = 'black';
+      pp.content = cont;
+      pp.fontFamily = this.font_content;
+      pp.fontSize = 30;
+      let layer = createLayer();
+      layer.addChild(pp);
+
+      const action = new DrawAction({
+        layer: pp.layer.name,
+        tool: this.tool,
+        points: pp.point,
+        text_check: 0
+      });
+      history.add(action);
     }
+
   },
   computed: {
     // Acitve
@@ -343,7 +364,10 @@ export default {
     },
     txt_content: function() {
       return this.$store.getters.textArgs.content;
-    }
+    },
+    font_content:function() {
+      return this.$store.getters.textArgs.font;
+    },
   },
   mounted() {
     this.$store.dispatch("setWhiteboardTool", "none");
