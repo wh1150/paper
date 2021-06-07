@@ -41,6 +41,7 @@ function onMouseDrag(event) {
 function onMouseUp(event) {
 
     local.path.add(event.point);
+    // console.log(local.path);
     local.path.simplify();
     const action = new DrawAction({
         layer: local.path.layer.name,

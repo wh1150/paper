@@ -7,5 +7,5 @@ export default [
     '#6DCFF6',
     '#FBAF5D',
     '#39B54A',
-    '#448CCB'
+    '#000000'
 ]
