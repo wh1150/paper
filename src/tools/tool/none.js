@@ -13,26 +13,26 @@ let local = {
 
 function onMouseMove(event){
     for(let layer of paper.project.layers)
+
         layer.selected = false;
 
-    if(event.item) {
-        console.log(event.item.position);
-    }
+    if(event.item)
+        event.item.selected = true;
 }
 // eslint-disable-next-line no-unused-vars
 function onMouseDown(event) {
-    console.log(event.item);
+
     //---------------------------------
+
     /*p = event.item;
     local.s_point = event.point;*/
 }
 // eslint-disable-next-line no-unused-vars
 function onMouseDrag(event) {
-    if(event.item) {
-        console.log(event.item.position);
-    }
 
-    event.item.position += event.delta;
+        console.log(event.delta);
+        console.log()
+    //event.item.position += event.delta;
 
 
     //---------------------------------
